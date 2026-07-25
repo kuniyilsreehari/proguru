@@ -584,6 +584,8 @@ Analysis Summary:
         energyMetric.textContent = '-- J';
 
         voiceStatus.textContent = 'Tap microphone to dictate prompt verbally';
+        // Reset adaptive shortcuts
+        updateAdaptiveShortcuts('');
     });
 
     // Node toggling click responses
@@ -601,6 +603,102 @@ Analysis Summary:
                 } else {
                     status.textContent = 'MUTED';
                 }
+            }
+        });
+    });
+
+    // --- 8. Adaptive One-Tap Interface Controller ---
+    const presets = {
+        'debug-sql': { action: 'Debug', subject: 'the database query', modifier: 'with strict safety focus', target: 'formatted as optimized SQL schema', engine: 'Aethera LLM v4', temp: '0.2' },
+        'explain-python': { action: 'Explain', subject: 'the algorithm', modifier: 'with line-by-line comments', target: 'formatted as Python code', engine: 'Aethera LLM v4', temp: '0.7' },
+        'generate-nn': { action: 'Generate', subject: 'the neural network layers', modifier: 'using modern best practices', target: 'formatted as Python code', engine: 'Aethera LLM v4', temp: '1.2' },
+        // Context-driven updates
+        'explain-a11y': { action: 'Explain', subject: 'the CSS layout', modifier: 'using modern best practices', target: 'formatted as a Markdown list', engine: 'Aethera LLM v4', temp: '0.7' },
+        'explain-hash': { action: 'Explain', subject: 'the security protocol', modifier: 'with strict safety focus', target: 'formatted as raw JSON data', engine: 'Aethera LLM v4', temp: '0.2' },
+        'debug-flexbox': { action: 'Debug', subject: 'the CSS layout', modifier: 'using modern best practices', target: 'formatted as JavaScript code', engine: 'Aethera LLM v4', temp: '0.7' },
+        'debug-csp': { action: 'Debug', subject: 'the security protocol', modifier: 'with strict safety focus', target: 'formatted as raw JSON data', engine: 'Aethera LLM v4', temp: '0.2' },
+        'generate-table': { action: 'Generate', subject: 'the database query', modifier: 'with line-by-line comments', target: 'formatted as structured HTML table', engine: 'Aethera LLM v4', temp: '0.7' },
+        'generate-axios': { action: 'Generate', subject: 'the API endpoint', modifier: 'using modern best practices', target: 'formatted as JavaScript code', engine: 'Aethera LLM v4', temp: '0.7' }
+    };
+
+    const oneTapContainer = document.getElementById('one-tap-shortcuts');
+
+    function updateAdaptiveShortcuts(actionType) {
+        if (!oneTapContainer) return;
+        
+        let html = '';
+        if (actionType === 'Explain') {
+            html = `
+                <button class="one-tap-pill" data-preset="explain-python">✦ Explain Binary Search</button>
+                <button class="one-tap-pill" data-preset="explain-a11y">✦ Explain Accessibility Grid</button>
+                <button class="one-tap-pill" data-preset="explain-hash">✦ Explain Hashing Protocol</button>
+            `;
+        } else if (actionType === 'Debug') {
+            html = `
+                <button class="one-tap-pill" data-preset="debug-sql">⚡ Optimize SQL Query</button>
+                <button class="one-tap-pill" data-preset="debug-flexbox">⚡ Debug CSS Alignment</button>
+                <button class="one-tap-pill" data-preset="debug-csp">⚡ Debug Security CSP</button>
+            `;
+        } else if (actionType === 'Generate') {
+            html = `
+                <button class="one-tap-pill" data-preset="generate-nn">🧠 Generate CNN Layer</button>
+                <button class="one-tap-pill" data-preset="generate-table">🧠 Generate DB Schema HTML</button>
+                <button class="one-tap-pill" data-preset="generate-axios">🧠 Generate Axios Endpoint</button>
+            `;
+        } else {
+            // General recommendations
+            html = `
+                <button class="one-tap-pill" data-preset="debug-sql">⚡ Optimize SQL Query</button>
+                <button class="one-tap-pill" data-preset="explain-python">✦ Explain Binary Search</button>
+                <button class="one-tap-pill" data-preset="generate-nn">🧠 Generate CNN Layer</button>
+            `;
+        }
+        
+        oneTapContainer.innerHTML = html;
+    }
+
+    if (oneTapContainer) {
+        oneTapContainer.addEventListener('click', (e) => {
+            const pill = e.target.closest('.one-tap-pill');
+            if (!pill || isPipelineRunning) return;
+
+            const presetKey = pill.getAttribute('data-preset');
+            const config = presets[presetKey];
+
+            if (config) {
+                // 1. Clear existing inputs
+                clearSelectedTokens();
+
+                // 2. Select tokens visually & logically
+                Object.keys(activeTokens).forEach(key => {
+                    activeTokens[key] = config[key];
+                    const btn = document.querySelector(`.token-btn[data-type="${key}"][data-value="${config[key]}"]`);
+                    if (btn) btn.classList.add('selected');
+                });
+
+                // 3. Update prompt display text
+                userSpeechInput = '';
+                updatePromptText();
+
+                // 4. Set sliders/engine state
+                activeTemp = config.temp;
+                document.querySelectorAll('#selector-temp .capsule-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-value') === activeTemp);
+                });
+
+                // 5. Fire pipeline execution instantly! (One-Tap!)
+                runBtn.click();
+            }
+        });
+    }
+
+    // Wrap token matrix buttons click listener to passively trigger shortcut updates
+    tokenButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.getAttribute('data-type') === 'action') {
+                const isSelected = button.classList.contains('selected');
+                const actionValue = isSelected ? button.getAttribute('data-value') : '';
+                updateAdaptiveShortcuts(actionValue);
             }
         });
     });

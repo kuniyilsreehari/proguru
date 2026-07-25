@@ -975,3 +975,49 @@ input:checked + .switch-slider:before {
     white-space: nowrap !important;
     border: 0 !important;
 }
+
+/* Adaptive One-Tap Interface Recommendations */
+.one-tap-section {
+    margin-bottom: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 20px;
+}
+
+.one-tap-label {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.one-tap-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.one-tap-pill {
+    background: rgba(255, 158, 0, 0.03);
+    border: 1px solid rgba(255, 158, 0, 0.15);
+    color: var(--text-white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-family: var(--font-title);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.one-tap-pill:hover {
+    background: rgba(255, 158, 0, 0.1);
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+    box-shadow: 0 0 12px rgba(255, 158, 0, 0.2);
+    transform: translateY(-1px);
+}
