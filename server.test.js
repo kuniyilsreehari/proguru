@@ -100,5 +100,35 @@ describe('Aethera Full-Stack API Suite', () => {
 
             expect(res.body).toHaveProperty('error');
         });
+
+        it('should trigger deterministic safety intercept when safetyMode is enabled', async () => {
+            const res = await request(app)
+                .post('/api/generate')
+                .send({
+                    prompt: 'Explain the database query',
+                    engine: 'Aethera LLM v4',
+                    temp: '0.7',
+                    safetyMode: true
+                })
+                .expect(200);
+
+            expect(res.body).toHaveProperty('response');
+            expect(res.body.response).toContain('DETERMINISTIC SAFETY PIPELINE OUTCOME');
+        });
+
+        it('should automatically intercept and route sensitive keywords deterministically', async () => {
+            const res = await request(app)
+                .post('/api/generate')
+                .send({
+                    prompt: 'Write a password secure hash algorithm',
+                    engine: 'Aethera LLM v4',
+                    temp: '0.7',
+                    safetyMode: false
+                })
+                .expect(200);
+
+            expect(res.body).toHaveProperty('response');
+            expect(res.body.response).toContain('DETERMINISTIC SAFETY FAILSAFE: Secure pbkdf2 Hashing');
+        });
     });
 });

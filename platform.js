@@ -117,6 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- 2.5 Safety Mode Toggle Listener ---
+    const safetyCheckbox = document.getElementById('safety-mode-checkbox');
+    const safetyStatus = document.getElementById('safety-status-text');
+    if (safetyCheckbox && safetyStatus) {
+        safetyCheckbox.addEventListener('change', () => {
+            if (safetyCheckbox.checked) {
+                safetyStatus.textContent = 'DET-SAFETY';
+                safetyStatus.classList.add('active');
+                alertLog('Deterministic Safety Mode activated. All probabilistic AI generation bypassed.');
+            } else {
+                safetyStatus.textContent = 'OFFLINE MOCKS';
+                safetyStatus.classList.remove('active');
+                alertLog('Safety Mode disengaged. Standard backup rules loaded.');
+            }
+        });
+    }
+
     // --- 3. Web Speech API (Dictation Input) ---
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
@@ -300,7 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
                 prompt: prompt,
                 engine: activeEngine,
-                temp: activeTemp
+                temp: activeTemp,
+                safetyMode: safetyCheckbox ? safetyCheckbox.checked : false
             })
         })
         .then(res => res.json())
