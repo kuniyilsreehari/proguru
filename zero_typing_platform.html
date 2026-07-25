@@ -106,15 +106,15 @@
                     <div class="param-group">
                         <span class="param-title">AI Engine</span>
                         <div class="engine-cards">
-                            <div class="engine-card active" data-engine="Aethera LLM v4">
+                            <div class="engine-card active" data-engine="Aethera LLM v4" role="button" tabindex="0" aria-label="Select Aethera-4 Core Reasoning model">
                                 <div class="engine-name">AETHERA-4</div>
                                 <div class="engine-desc">General Reasoning</div>
                             </div>
-                            <div class="engine-card" data-engine="Volta Vision v2">
+                            <div class="engine-card" data-engine="Volta Vision v2" role="button" tabindex="0" aria-label="Select Volta-2 Graphic Synthesis model">
                                 <div class="engine-name">VOLTA-2</div>
                                 <div class="engine-desc">Graphic Synthesis</div>
                             </div>
-                            <div class="engine-card" data-engine="Spectra Audio Engine">
+                            <div class="engine-card" data-engine="Spectra Audio Engine" role="button" tabindex="0" aria-label="Select Spectra Acoustic model">
                                 <div class="engine-name">SPECTRA</div>
                                 <div class="engine-desc">Acoustic Core</div>
                             </div>
@@ -145,21 +145,21 @@
                 </div>
                 
                 <div class="pipeline-canvas" id="pipeline-canvas-container">
-                    <div class="pipeline-node node-input active" id="node-input-speech">
+                    <div class="pipeline-node node-input active" id="node-input-speech" role="button" tabindex="0" aria-label="Toggle Audio Input Node">
                         <div class="node-icon font-icon">🎙</div>
                         <div class="node-label">Audio Input</div>
                         <span class="node-status">LISTENING</span>
                     </div>
                     <div class="pipeline-arrow" id="arrow-1"><span></span></div>
                     
-                    <div class="pipeline-node node-model active" id="node-core-model">
+                    <div class="pipeline-node node-model active" id="node-core-model" role="button" tabindex="0" aria-label="Toggle AI core model processing node">
                         <div class="node-icon font-icon">🧠</div>
                         <div class="node-label">Aethera-4 Core</div>
                         <span class="node-status">READY</span>
                     </div>
                     <div class="pipeline-arrow" id="arrow-2"><span></span></div>
                     
-                    <div class="pipeline-node node-output active" id="node-output-speaker">
+                    <div class="pipeline-node node-output active" id="node-output-speaker" role="button" tabindex="0" aria-label="Toggle Audio Output Reader node">
                         <div class="node-icon font-icon">🔊</div>
                         <div class="node-label">Audio Reader</div>
                         <span class="node-status">ONLINE</span>

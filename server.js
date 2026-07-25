@@ -2,21 +2,49 @@ require('dotenv').config();
 const express = require('express');
 const os = require('os');
 const path = require('path');
+const helmet = require('helmet');
 const dbHelper = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.static(__dirname));
+// Security: Helmet HTTP Headers configuration with CSP exceptions
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            connectSrc: ["'self'", "https://generativelanguage.googleapis.com"],
+            imgSrc: ["'self'", "data:"],
+            mediaSrc: ["'self'"],
+        },
+    },
+}));
+
+// Mitigate large JSON request payloads DOS vulnerability
+app.use(express.json({ limit: '15kb' }));
+
+// Serve static assets with cache-control efficiency parameters
+app.use(express.static(__dirname, {
+    maxAge: '1d',
+    etag: true
+}));
 
 // Endpoint 1: Register Developer Email
 app.post('/api/register', async (req, res) => {
     try {
         const { email } = req.body;
-        if (!email || !email.includes('@')) {
-            return res.status(400).json({ success: false, error: 'Invalid email address.' });
+        
+        // Strict input validation
+        if (!email || typeof email !== 'string' || email.length > 100) {
+            return res.status(400).json({ success: false, error: 'Email size parameter error.' });
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ success: false, error: 'Invalid email address format.' });
         }
 
         // Generate cryptographic key
@@ -76,8 +104,9 @@ app.get('/api/telemetry', (req, res) => {
 app.post('/api/generate', async (req, res) => {
     const { prompt, engine, temp } = req.body;
     
-    if (!prompt) {
-        return res.status(400).json({ error: 'Prompt instruction is required.' });
+    // Strict input length validation
+    if (!prompt || typeof prompt !== 'string' || prompt.length > 1200) {
+        return res.status(400).json({ error: 'Invalid prompt parameters or size limit exceeded.' });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -188,10 +217,20 @@ Analysis:
 * Response generated via server rule lookup. Set GEMINI_API_KEY env key to trigger live cognitive answers.`;
 }
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`\n======================================================`);
-    console.log(`  Aethera Full-Stack Workspace running successfully!`);
-    console.log(`  Server Local Host: http://localhost:${PORT}`);
-    console.log(`======================================================\n`);
+// Global Exception error handler (prevents trace leakage)
+app.use((err, req, res, next) => {
+    console.error('Unhandled internal error:', err.message);
+    res.status(500).json({ error: 'An unexpected system or security exception occurred.' });
 });
+
+// Start Server
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`\n======================================================`);
+        console.log(`  Aethera Full-Stack Workspace running successfully!`);
+        console.log(`  Server Local Host: http://localhost:${PORT}`);
+        console.log(`======================================================\n`);
+    });
+}
+
+module.exports = app;

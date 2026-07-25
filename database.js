@@ -24,6 +24,10 @@ function initializeDatabase() {
             console.error('Error creating registrations table:', err.message);
         } else {
             console.log('Registrations table initialized.');
+            db.run(`CREATE INDEX IF NOT EXISTS idx_emails ON registrations(email)`, (idxErr) => {
+                if (idxErr) console.error('Error creating email index:', idxErr.message);
+                else console.log('Index idx_emails verified.');
+            });
         }
     });
 }

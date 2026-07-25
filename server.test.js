@@ -1,0 +1,104 @@
+const request = require('supertest');
+const app = require('./server');
+const dbHelper = require('./database');
+
+describe('Aethera Full-Stack API Suite', () => {
+    
+    // Close the SQLite database connection after all tests run to prevent Jest from hanging
+    afterAll((done) => {
+        dbHelper.db.close(() => {
+            console.log('Database connection closed.');
+            done();
+        });
+    });
+
+    describe('GET /api/telemetry', () => {
+        it('should return 200 OK and valid system properties', async () => {
+            const res = await request(app)
+                .get('/api/telemetry')
+                .expect('Content-Type', /json/)
+                .expect(200);
+
+            expect(res.body).toHaveProperty('cpu');
+            expect(res.body).toHaveProperty('memory');
+            expect(res.body).toHaveProperty('entropy');
+            expect(res.body).toHaveProperty('gravityCompensator');
+            expect(res.body).toHaveProperty('systemUptime');
+            expect(typeof res.body.cpu).toBe('number');
+            expect(typeof res.body.memory).toBe('number');
+        });
+    });
+
+    describe('POST /api/register', () => {
+        const testEmail = `test_${Math.floor(Math.random() * 10000)}@evaluator.com`;
+
+        it('should successfully register a valid email and return an access token', async () => {
+            const res = await request(app)
+                .post('/api/register')
+                .send({ email: testEmail })
+                .expect('Content-Type', /json/)
+                .expect(200);
+
+            expect(res.body.success).toBe(true);
+            expect(res.body).toHaveProperty('key');
+            expect(res.body.email).toBe(testEmail);
+            expect(res.body.key.startsWith('AG-')).toBe(true);
+        });
+
+        it('should return 400 Bad Request for an invalid email format', async () => {
+            const res = await request(app)
+                .post('/api/register')
+                .send({ email: 'bad-email-address' })
+                .expect(400);
+
+            expect(res.body.success).toBe(false);
+            expect(res.body.error).toContain('format');
+        });
+
+        it('should return 400 Bad Request for an oversized email', async () => {
+            const longEmail = 'a'.repeat(120) + '@test.com';
+            const res = await request(app)
+                .post('/api/register')
+                .send({ email: longEmail })
+                .expect(400);
+
+            expect(res.body.success).toBe(false);
+            expect(res.body.error).toContain('size');
+        });
+    });
+
+    describe('POST /api/generate', () => {
+        it('should return a valid generated response for normal input prompt', async () => {
+            const res = await request(app)
+                .post('/api/generate')
+                .send({
+                    prompt: 'Explain the algorithm in comprehensive detail',
+                    engine: 'Aethera LLM v4',
+                    temp: '0.7'
+                })
+                .expect(200);
+
+            expect(res.body).toHaveProperty('response');
+            expect(res.body.response).toContain('binary_search');
+        });
+
+        it('should return 400 Bad Request if prompt is missing', async () => {
+            const res = await request(app)
+                .post('/api/generate')
+                .send({ engine: 'Aethera LLM v4' })
+                .expect(400);
+
+            expect(res.body).toHaveProperty('error');
+        });
+
+        it('should return 400 Bad Request if prompt exceeds length bounds', async () => {
+            const giantPrompt = 'X'.repeat(1300);
+            const res = await request(app)
+                .post('/api/generate')
+                .send({ prompt: giantPrompt })
+                .expect(400);
+
+            expect(res.body).toHaveProperty('error');
+        });
+    });
+});
