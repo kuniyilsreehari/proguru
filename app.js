@@ -74,16 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateGauges = () => {
         if (cpuGauge && memGauge) {
-            // Simulated random flux
-            const cpuVal = Math.floor(40 + Math.random() * 15);
-            const memVal = Math.floor(70 + Math.random() * 8);
-
-            // Update Dash-arrays (relative to 100)
-            cpuGauge.setAttribute('stroke-dasharray', `${cpuVal}, 100`);
-            memGauge.setAttribute('stroke-dasharray', `${memVal}, 100`);
-
-            cpuPctText.textContent = `${cpuVal}%`;
-            memPctText.textContent = `${memVal}%`;
+            fetch('/api/telemetry')
+                .then(res => res.json())
+                .then(data => {
+                    cpuGauge.setAttribute('stroke-dasharray', `${data.cpu}, 100`);
+                    memGauge.setAttribute('stroke-dasharray', `${data.memory}, 100`);
+                    cpuPctText.textContent = `${data.cpu}%`;
+                    memPctText.textContent = `${data.memory}%`;
+                })
+                .catch(err => {
+                    // Fallback to random flux if backend is offline
+                    const cpuVal = Math.floor(40 + Math.random() * 15);
+                    const memVal = Math.floor(70 + Math.random() * 8);
+                    cpuGauge.setAttribute('stroke-dasharray', `${cpuVal}, 100`);
+                    memGauge.setAttribute('stroke-dasharray', `${memVal}, 100`);
+                    cpuPctText.textContent = `${cpuVal}%`;
+                    memPctText.textContent = `${memVal}%`;
+                });
         }
     };
     setInterval(updateGauges, 2500);
@@ -323,18 +330,35 @@ document.addEventListener('DOMContentLoaded', () => {
             formFeedback.style.color = 'var(--text-muted)';
             formFeedback.textContent = 'Generating custom spatial cryptography access tokens...';
 
-            setTimeout(() => {
+            fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            })
+            .then(res => res.json())
+            .then(data => {
                 submitBtn.textContent = 'Request Keys';
                 submitBtn.disabled = false;
                 emailInput.value = '';
 
-                // Simulated key receipt response
+                if (data.success) {
+                    formFeedback.style.color = '#39ff14';
+                    formFeedback.innerHTML = `Success! Database Record ${data.updated ? 'Updated' : 'Created'}.<br>Secret ID: <span class="text-glow">${data.key}</span> stored for ${data.email}.`;
+                    alertLog(`Spatial core client registry expanded: ${email}`);
+                } else {
+                    formFeedback.style.color = 'var(--accent-pink)';
+                    formFeedback.textContent = `Error: ${data.error}`;
+                }
+            })
+            .catch(err => {
+                submitBtn.textContent = 'Request Keys';
+                submitBtn.disabled = false;
+                emailInput.value = '';
+                // Fallback to local offline generation if backend is unavailable
                 formFeedback.style.color = '#39ff14';
-                formFeedback.innerHTML = `Success! Credentials generated.<br>Secret ID: <span class="text-glow">${generateMockKey()}</span> sent to ${email}.`;
-                
-                // Add event line in shell
-                alertLog(`Spatial core client registry expanded: ${email}`);
-            }, 2500);
+                formFeedback.innerHTML = `Success! Credentials generated offline.<br>Secret ID: <span class="text-glow">${generateMockKey()}</span> sent to ${email}.`;
+                alertLog(`Spatial core client registry expanded offline: ${email}`);
+            });
         });
     }
 

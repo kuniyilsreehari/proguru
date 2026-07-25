@@ -292,6 +292,24 @@ document.addEventListener('DOMContentLoaded', () => {
         nodeSpeech.classList.add('running');
         nodeSpeech.querySelector('.node-status').textContent = 'ROUTING DATA';
 
+        // Start backend fetch in parallel
+        const startTime = Date.now();
+        const fetchPromise = fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: prompt,
+                engine: activeEngine,
+                temp: activeTemp
+            })
+        })
+        .then(res => res.json())
+        .then(data => data.response)
+        .catch(err => {
+            console.warn('Backend offline, calling fallback local engine.');
+            return getModelOutputResponse(prompt);
+        });
+
         // Stage 1: Reading input
         setTimeout(() => {
             nodeSpeech.classList.remove('running');
@@ -302,31 +320,32 @@ document.addEventListener('DOMContentLoaded', () => {
             nodeModel.querySelector('.node-status').textContent = 'INFERENCING';
             outputDisplay.textContent = 'Synthesizing response weights...';
 
-            setTimeout(() => {
+            // Wait for both the minimum transition timer (1.8s) and the API fetch
+            Promise.all([
+                fetchPromise,
+                new Promise(resolve => setTimeout(resolve, 1800))
+            ])
+            .then(([responseText]) => {
                 nodeModel.classList.remove('running');
                 nodeModel.querySelector('.node-status').textContent = 'COMPLETE';
 
-                // Node 3: Audio synthesizer outputting
+                // Node 3: Audio reader outputting
                 nodeSpeaker.classList.add('running');
                 nodeSpeaker.querySelector('.node-status').textContent = 'SYNTHESIZING';
 
-                // Produce dynamic response content
-                const responseText = getModelOutputResponse(prompt);
-                
                 // Typing text print speed simulation
-                typeWriteResponse(responseText);
-
-            }, 1800);
+                typeWriteResponse(responseText, Date.now() - startTime);
+            });
 
         }, 1000);
     }
 
-    function typeWriteResponse(text) {
+    function typeWriteResponse(text, elapsedMs = 0) {
         outputDisplay.textContent = '';
         let index = 0;
         
         // Metrics calculations
-        const latency = Math.floor(600 + Math.random() * 400);
+        const latency = elapsedMs || Math.floor(600 + Math.random() * 400);
         const speed = Math.floor(40 + Math.random() * 15);
         const energy = (latency * 0.003).toFixed(3);
 

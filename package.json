@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "description": "Antigravity OS and Aethera Zero-Typing AI Playground static pages server.",
   "scripts": {
-    "dev": "vite --port 5173 --host"
+    "dev": "node server.js",
+    "start": "node server.js"
   },
   "devDependencies": {
     "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
   }
 }
