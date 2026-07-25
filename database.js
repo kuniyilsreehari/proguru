@@ -28,6 +28,40 @@ function initializeDatabase() {
                 if (idxErr) console.error('Error creating email index:', idxErr.message);
                 else console.log('Index idx_emails verified.');
             });
+
+            db.run(`
+                CREATE TABLE IF NOT EXISTS caregivers (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    specialty TEXT,
+                    latitude REAL,
+                    longitude REAL,
+                    status TEXT DEFAULT 'AVAILABLE'
+                )
+            `, (cgErr) => {
+                if (cgErr) {
+                    console.error('Error creating caregivers table:', cgErr.message);
+                } else {
+                    console.log('Caregivers table initialized.');
+                    seedCaregiversIfEmpty();
+                }
+            });
+        }
+    });
+}
+
+function seedCaregiversIfEmpty() {
+    db.get(`SELECT COUNT(*) as count FROM caregivers`, (err, row) => {
+        if (!err && row && row.count === 0) {
+            console.log('Seeding mock caregivers table...');
+            const seedStmt = db.prepare(`
+                INSERT INTO caregivers (name, specialty, latitude, longitude, status)
+                VALUES (?, ?, ?, ?, ?)
+            `);
+            seedStmt.run("Dr. Sarah Chen", "Emergency Specialist", 37.7850, -122.4080, "AVAILABLE");
+            seedStmt.run("Marcus Vance", "Rapid Response EMT", 37.7510, -122.4490, "AVAILABLE");
+            seedStmt.run("Elena Rostova", "Home Care RN", 37.8010, -122.4340, "AVAILABLE");
+            seedStmt.finalize();
         }
     });
 }

@@ -69,6 +69,71 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+// Distance calculation formula (Haversine)
+function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+// Endpoint 1.5: Zero-Click Caregiver Dispatch Routing
+app.post('/api/dispatch-alert', (req, res) => {
+    const { patientLat, patientLon } = req.body;
+
+    const latVal = parseFloat(patientLat);
+    const lonVal = parseFloat(patientLon);
+
+    if (isNaN(latVal) || isNaN(lonVal)) {
+        return res.status(400).json({ success: false, error: 'Invalid coordinates.' });
+    }
+
+    dbHelper.db.all("SELECT * FROM caregivers WHERE status = 'AVAILABLE'", [], (err, caregivers) => {
+        if (err) {
+            console.error('Error fetching caregivers:', err.message);
+            return res.status(500).json({ success: false, error: 'Failed to access caregivers catalog.' });
+        }
+
+        if (caregivers.length === 0) {
+            return res.json({ success: false, error: 'No available caregivers nearby. Dispatching standard municipal emergency systems.' });
+        }
+
+        let closestCaregiver = null;
+        let minDistance = Infinity;
+
+        caregivers.forEach(cg => {
+            const dist = calculateHaversineDistance(latVal, lonVal, cg.latitude, cg.longitude);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestCaregiver = cg;
+            }
+        });
+
+        if (closestCaregiver) {
+            // Update caregiver status to DISPATCHED
+            dbHelper.db.run("UPDATE caregivers SET status = 'DISPATCHED' WHERE id = ?", [closestCaregiver.id], (upErr) => {
+                if (upErr) console.error('Error updating caregiver status:', upErr.message);
+            });
+
+            // Calculate estimated transit time (assumed 12 miles per hour in urban traffic)
+            const transitMinutes = Math.round((minDistance / 12) * 60) + 2;
+
+            return res.json({
+                success: true,
+                caregiver: closestCaregiver,
+                distance: minDistance,
+                transitTime: transitMinutes
+            });
+        }
+
+        return res.status(500).json({ success: false, error: 'Failed to route caregiver.' });
+    });
+});
+
 // Endpoint 2: System Health Telemetry
 app.get('/api/telemetry', (req, res) => {
     try {

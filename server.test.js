@@ -148,4 +148,36 @@ describe('Aethera Full-Stack API Suite', () => {
             expect(res.body.response).toContain('Benefit:');
         });
     });
+
+    describe('POST /api/dispatch-alert', () => {
+        it('should calculate proximity, find the closest available caregiver, and dispatch successfully', async () => {
+            const res = await request(app)
+                .post('/api/dispatch-alert')
+                .send({
+                    patientLat: 37.7749,
+                    patientLon: -122.4194
+                })
+                .expect(200);
+
+            expect(res.body.success).toBe(true);
+            expect(res.body).toHaveProperty('caregiver');
+            expect(res.body.caregiver.name).toBe('Dr. Sarah Chen'); // Closest available caregiver
+            expect(res.body).toHaveProperty('distance');
+            expect(res.body.distance).toBeLessThan(1.5);
+            expect(res.body).toHaveProperty('transitTime');
+        });
+
+        it('should return 400 Bad Request for invalid coordinate formatting', async () => {
+            const res = await request(app)
+                .post('/api/dispatch-alert')
+                .send({
+                    patientLat: 'invalid_lat',
+                    patientLon: 'invalid_lon'
+                })
+                .expect(400);
+
+            expect(res.body.success).toBe(false);
+            expect(res.body.error).toContain('coordinates');
+        });
+    });
 });

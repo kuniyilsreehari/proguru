@@ -194,13 +194,76 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePromptText();
             voiceStatus.textContent = 'Voice captured successfully!';
             
-            // Log in console
+            // Distress Word Detection
+            const triggerWords = ['help', 'emergency', 'pain', 'fell', 'hurt'];
+            const lower = resultText.toLowerCase();
+            const matchesDistress = triggerWords.some(word => lower.includes(word));
+            if (matchesDistress) {
+                triggerCaregiverPanicDispatch(`Vocal distress detected: "${resultText}"`);
+            }
+
             console.log('Voice prompt:', resultText);
         };
     } else {
         voiceStatus.textContent = 'Speech interface unsupported in this browser.';
         micBtn.style.opacity = '0.5';
         micBtn.style.cursor = 'not-allowed';
+    }
+
+    // --- 3.5 Panic Trigger Button & Voice Dispatcher ---
+    const panicBtn = document.getElementById('panic-trigger-btn');
+    if (panicBtn) {
+        panicBtn.addEventListener('click', () => {
+            triggerCaregiverPanicDispatch('Manual Panic Button pressed.');
+        });
+    }
+
+    function triggerCaregiverPanicDispatch(reason) {
+        alertLog(`[EMERGENCY TRIGGER] ${reason}`);
+        
+        const layout = document.querySelector('.workspace-layout');
+        if (layout) {
+            layout.classList.add('emergency-alarm-active');
+        }
+        
+        voiceStatus.textContent = 'ROUTING CAREGIVER IN REAL-TIME...';
+        
+        // Mock Patient Location (San Francisco Center)
+        fetch('/api/dispatch-alert', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                patientLat: 37.7749,
+                patientLon: -122.4194
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const cg = data.caregiver;
+                const statusMsg = `CRITICAL ASSIST ROUTED: ${cg.name} (${cg.specialty}) dispatched to coordinates. Transit: ${data.transitTime} mins. Distance: ${data.distance.toFixed(2)} mi.`;
+                alertLog(statusMsg);
+                voiceStatus.textContent = `Dispatched: ${cg.name}`;
+                
+                // Read assurance passively to patient via TTS
+                const speakMsg = `Emergency alert received. Caregiver ${cg.name}, a ${cg.specialty}, is routing to your location. Distance is ${data.distance.toFixed(1)} miles. Expected arrival in ${data.transitTime} minutes. Please stay calm.`;
+                
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(speakMsg);
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.0;
+                    window.speechSynthesis.speak(utterance);
+                }
+            } else {
+                alertLog(`[DISPATCH FAIL] ${data.error || 'Unknown error'}`);
+                voiceStatus.textContent = 'Caregivers unavailable.';
+            }
+        })
+        .catch(err => {
+            console.error('Panic routing request failed:', err);
+            alertLog('[DISPATCH ERROR] Failed to connect to server routing system.');
+        });
     }
 
     micBtn.addEventListener('click', () => {
@@ -578,6 +641,11 @@ Analysis Summary:
     // --- 7. Reset / Clear Workspace ---
     resetBtn.addEventListener('click', () => {
         if (isPipelineRunning) return;
+        
+        const layout = document.querySelector('.workspace-layout');
+        if (layout) {
+            layout.classList.remove('emergency-alarm-active');
+        }
         
         clearSelectedTokens();
         userSpeechInput = '';
