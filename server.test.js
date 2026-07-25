@@ -3,7 +3,12 @@ const app = require('./server');
 const dbHelper = require('./database');
 
 describe('Aethera Full-Stack API Suite', () => {
-    
+    beforeEach((done) => {
+        dbHelper.db.run("UPDATE caregivers SET status = 'AVAILABLE'", [], () => {
+            done();
+        });
+    });
+
     // Close the SQLite database connection after all tests run to prevent Jest from hanging
     afterAll((done) => {
         dbHelper.db.close(() => {
@@ -72,14 +77,14 @@ describe('Aethera Full-Stack API Suite', () => {
             const res = await request(app)
                 .post('/api/generate')
                 .send({
-                    prompt: 'Explain the algorithm in comprehensive detail',
+                    prompt: 'Cope with active cravings using cognitive behavioral therapy (CBT) focus',
                     engine: 'Aethera LLM v4',
                     temp: '0.7'
                 })
                 .expect(200);
 
             expect(res.body).toHaveProperty('response');
-            expect(res.body.response).toContain('binary_search');
+            expect(res.body.response).toContain('[AETHERA CLINICAL PROTOCOL // COPING CHECKLIST]');
         });
 
         it('should return 400 Bad Request if prompt is missing', async () => {
@@ -120,7 +125,7 @@ describe('Aethera Full-Stack API Suite', () => {
             const res = await request(app)
                 .post('/api/generate')
                 .send({
-                    prompt: 'Write a password secure hash algorithm',
+                    prompt: 'I think someone is having an overdose',
                     engine: 'Aethera LLM v4',
                     temp: '0.7',
                     safetyMode: false
@@ -128,21 +133,21 @@ describe('Aethera Full-Stack API Suite', () => {
                 .expect(200);
 
             expect(res.body).toHaveProperty('response');
-            expect(res.body.response).toContain('DETERMINISTIC SAFETY FAILSAFE: Secure pbkdf2 Hashing');
+            expect(res.body.response).toContain('[DETERMINISTIC CRISIS ROUTER - OVERDOSE DETECTED]');
         });
 
         it('should route to persuasive engine template when Persuader Voice Core is selected', async () => {
             const res = await request(app)
                 .post('/api/generate')
                 .send({
-                    prompt: 'Explain the algorithm in comprehensive detail',
+                    prompt: 'Cope with active cravings',
                     engine: 'Persuader Voice Core',
                     temp: '0.7'
                 })
                 .expect(200);
 
             expect(res.body).toHaveProperty('response');
-            expect(res.body.response).toContain('[AETHERA PERSUASION ENGINE]');
+            expect(res.body.response).toContain('[AETHERA PERSUASIVE RECOVERY CORE]');
             expect(res.body.response).toContain('Hook:');
             expect(res.body.response).toContain('Evidence:');
             expect(res.body.response).toContain('Benefit:');

@@ -691,16 +691,16 @@ Analysis Summary:
 
     // --- 8. Adaptive One-Tap Interface Controller ---
     const presets = {
-        'debug-sql': { action: 'Debug', subject: 'the database query', modifier: 'with strict safety focus', target: 'formatted as optimized SQL schema', engine: 'Aethera LLM v4', temp: '0.2' },
-        'explain-python': { action: 'Explain', subject: 'the algorithm', modifier: 'with line-by-line comments', target: 'formatted as Python code', engine: 'Aethera LLM v4', temp: '0.7' },
-        'generate-nn': { action: 'Generate', subject: 'the neural network layers', modifier: 'using modern best practices', target: 'formatted as Python code', engine: 'Aethera LLM v4', temp: '1.2' },
+        'crave-cbt': { action: 'Cope with', subject: 'active cravings', modifier: 'using cognitive behavioral therapy (CBT) focus', target: 'formatted as a step-by-step coping checklist', engine: 'Aethera LLM v4', temp: '0.7' },
+        'emerg-sms': { action: 'Draft', subject: 'active cravings', modifier: 'focusing on caregiver-specific instructions', target: 'formatted as an emergency caregiver text draft', engine: 'Persuader Voice Core', temp: '0.2' },
+        'detox-locator': { action: 'Locate', subject: 'local support meetings', modifier: 'following clinical safety guidelines', target: 'formatted as a local resource locator list', engine: 'Aethera LLM v4', temp: '0.7' },
         // Context-driven updates
-        'explain-a11y': { action: 'Explain', subject: 'the CSS layout', modifier: 'using modern best practices', target: 'formatted as a Markdown list', engine: 'Aethera LLM v4', temp: '0.7' },
-        'explain-hash': { action: 'Explain', subject: 'the security protocol', modifier: 'with strict safety focus', target: 'formatted as raw JSON data', engine: 'Aethera LLM v4', temp: '0.2' },
-        'debug-flexbox': { action: 'Debug', subject: 'the CSS layout', modifier: 'using modern best practices', target: 'formatted as JavaScript code', engine: 'Aethera LLM v4', temp: '0.7' },
-        'debug-csp': { action: 'Debug', subject: 'the security protocol', modifier: 'with strict safety focus', target: 'formatted as raw JSON data', engine: 'Aethera LLM v4', temp: '0.2' },
-        'generate-table': { action: 'Generate', subject: 'the database query', modifier: 'with line-by-line comments', target: 'formatted as structured HTML table', engine: 'Aethera LLM v4', temp: '0.7' },
-        'generate-axios': { action: 'Generate', subject: 'the API endpoint', modifier: 'using modern best practices', target: 'formatted as JavaScript code', engine: 'Aethera LLM v4', temp: '0.7' }
+        'crave-calm': { action: 'Cope with', subject: 'active cravings', modifier: 'with immediate de-escalation steps', target: 'formatted as a voice-friendly safety script', engine: 'Persuader Voice Core', temp: '0.2' },
+        'trigger-calm': { action: 'Cope with', subject: 'stress triggers', modifier: 'with immediate de-escalation steps', target: 'formatted as a voice-friendly safety script', engine: 'Persuader Voice Core', temp: '0.2' },
+        'trigger-cbt': { action: 'Cope with', subject: 'stress triggers', modifier: 'using cognitive behavioral therapy (CBT) focus', target: 'formatted as a step-by-step coping checklist', engine: 'Aethera LLM v4', temp: '0.7' },
+        'emerg-script': { action: 'Draft', subject: 'withdrawal symptoms', modifier: 'focusing on caregiver-specific instructions', target: 'formatted as an emergency caregiver text draft', engine: 'Persuader Voice Core', temp: '0.2' },
+        'support-list': { action: 'Locate', subject: 'local support meetings', modifier: 'with non-judgmental support', target: 'formatted as a local resource locator list', engine: 'Aethera LLM v4', temp: '0.7' },
+        'care-guide': { action: 'Assess', subject: 'caregiver warning signs', modifier: 'focusing on caregiver-specific instructions', target: 'formatted as a clinical summary log', engine: 'Aethera LLM v4', temp: '0.7' }
     };
 
     const oneTapContainer = document.getElementById('one-tap-shortcuts');
@@ -709,30 +709,32 @@ Analysis Summary:
         if (!oneTapContainer) return;
         
         let html = '';
-        if (actionType === 'Explain') {
+        if (actionType === 'Cope with') {
             html = `
-                <button class="one-tap-pill" data-preset="explain-python">✦ Explain Binary Search</button>
-                <button class="one-tap-pill" data-preset="explain-a11y">✦ Explain Accessibility Grid</button>
-                <button class="one-tap-pill" data-preset="explain-hash">✦ Explain Hashing Protocol</button>
+                <button class="one-tap-pill" data-preset="crave-cbt">⚡ Cope with Craving (CBT)</button>
+                <button class="one-tap-pill" data-preset="crave-calm">⚡ Cope with Craving (Calm)</button>
+                <button class="one-tap-pill" data-preset="trigger-calm">⚡ De-escalate Triggers</button>
             `;
-        } else if (actionType === 'Debug') {
+        } else if (actionType === 'Draft') {
             html = `
-                <button class="one-tap-pill" data-preset="debug-sql">⚡ Optimize SQL Query</button>
-                <button class="one-tap-pill" data-preset="debug-flexbox">⚡ Debug CSS Alignment</button>
-                <button class="one-tap-pill" data-preset="debug-csp">⚡ Debug Security CSP</button>
+                <button class="one-tap-pill" data-preset="emerg-sms">🆘 Emergency SMS Draft</button>
+                <button class="one-tap-pill" data-preset="emerg-script">🆘 Emergency Phone Script</button>
             `;
-        } else if (actionType === 'Generate') {
+        } else if (actionType === 'Locate') {
             html = `
-                <button class="one-tap-pill" data-preset="generate-nn">🧠 Generate CNN Layer</button>
-                <button class="one-tap-pill" data-preset="generate-table">🧠 Generate DB Schema HTML</button>
-                <button class="one-tap-pill" data-preset="generate-axios">🧠 Generate Axios Endpoint</button>
+                <button class="one-tap-pill" data-preset="detox-locator">✦ Find Support Group</button>
+                <button class="one-tap-pill" data-preset="support-list">✦ Local Resource List</button>
+            `;
+        } else if (actionType === 'Assess') {
+            html = `
+                <button class="one-tap-pill" data-preset="care-guide">📋 Assess Caregiver Signs</button>
             `;
         } else {
             // General recommendations
             html = `
-                <button class="one-tap-pill" data-preset="debug-sql">⚡ Optimize SQL Query</button>
-                <button class="one-tap-pill" data-preset="explain-python">✦ Explain Binary Search</button>
-                <button class="one-tap-pill" data-preset="generate-nn">🧠 Generate CNN Layer</button>
+                <button class="one-tap-pill" data-preset="crave-cbt">⚡ Cope with Craving</button>
+                <button class="one-tap-pill" data-preset="emerg-sms">🆘 Emergency SMS Draft</button>
+                <button class="one-tap-pill" data-preset="detox-locator">✦ Find Support Group</button>
             `;
         }
         
@@ -784,4 +786,24 @@ Analysis Summary:
             }
         });
     });
+
+    // --- 9. Educational Resources Loader Function ---
+    window.loadResource = (key) => {
+        if (isPipelineRunning) return;
+        
+        let query = "";
+        if (key === 'cravings-guide') {
+            query = "Cope with active cravings using cognitive behavioral therapy (CBT) focus formatted as a step-by-step coping checklist";
+        } else if (key === 'withdrawal-timeline') {
+            query = "Explain withdrawal symptoms following clinical safety guidelines formatted as a voice-friendly safety script";
+        } else if (key === 'emergency-hotlines') {
+            query = "Locate local support meetings following clinical safety guidelines formatted as a local resource locator list";
+        }
+        
+        if (query) {
+            clearSelectedTokens();
+            alertLog(`[RECOVERY HUB] Loading Educational Guide: "${key}"`);
+            animatePipelineExecution(query);
+        }
+    };
 });

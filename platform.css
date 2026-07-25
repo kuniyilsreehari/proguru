@@ -1063,3 +1063,44 @@ input:checked + .switch-slider:before {
         border-color: var(--accent-pink);
     }
 }
+
+/* Educational Recovery Hub styles */
+.resources-section {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 25px;
+}
+
+.resources-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.resource-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.resource-card:hover {
+    background: rgba(255, 158, 0, 0.03);
+    border-color: rgba(255, 158, 0, 0.2);
+    transform: translateX(3px);
+}
+
+.resource-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 4px;
+}
+
+.resource-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}

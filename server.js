@@ -238,54 +238,31 @@ function getMockResponse(prompt, engine, temp) {
         return getPersuasiveMockResponse(prompt);
     }
     
-    if (p.includes('explain') && p.includes('algorithm')) {
-        return `def binary_search(arr, target):
-    # Explain: A highly efficient search algorithm (O(log n))
-    low = 0
-    high = len(arr) - 1
-    
-    while low <= high:
-        mid = (low + high) // 2
-        guess = arr[mid]
-        if guess == target:
-            return mid
-        if guess > target:
-            high = mid - 1
-        else:
-            low = mid + 1
-    return None
+    if (p.includes('crave') || p.includes('cope') || p.includes('cbt')) {
+        return `[AETHERA CLINICAL PROTOCOL // COPING CHECKLIST]
+1. ACKNOWLEDGE & VALIDATE: Say to yourself, "I am experiencing an urge. It is just a feeling, and it will pass."
+2. COGNITIVE REFRAMING: Cravings peak within 15 minutes. Delay action and look at the clock.
+3. DEEP BREATHING: Breathe in for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.
+4. DISTRACT: Switch your visual environment. Go outside or drink a cold glass of water.
+5. REACH OUT: Tap the emergency button to alert your caregiver contact Sarah Chen.
 
-# Workspace Analysis:
-# Served by: ${engine} local backup core.
-# Temperature: ${temp}`;
+# Verified by Aethera clinical backup core.`;
     }
 
-    if (p.includes('debug') && p.includes('database')) {
-        return `-- Debug parameters applied. Index optimization requested.
-EXPLAIN ANALYZE
-SELECT u.id, u.username, o.amount
-FROM users u
-INNER JOIN orders o ON u.id = o.user_id
-WHERE o.created_at >= NOW() - INTERVAL '30 days'
-ORDER BY o.amount DESC;
-
--- OPTIMIZATION PATH:
--- Create compound index: CREATE INDEX idx_orders_user_created ON orders(user_id, created_at);`;
+    if (p.includes('withdrawal') || p.includes('symptom')) {
+        return `[AETHERA CLINICAL TIMELINE // WITHDRAWAL ADVICE]
+* Phase 1 (Hours 6-24): Tremors, anxiety, and mild sweating may surface. Engage in deep breathing.
+* Phase 2 (Days 1-3): Symptoms peak. Keep fluids high and monitor heart rate.
+* Warning Signs: If fever spikes above 101°F, or confusion occurs, go to the ER.
+* Caregiver Directive: Ensure the environment is calm, dim-lit, and call support at 988 if needed.`;
     }
 
-    if (p.includes('generate') && p.includes('neural')) {
-        return `import torch.nn as nn
-
-class ConvBlock(nn.Module):
-    # Generated via Aethera Neural Net builder
-    def __init__(self, in_channels, out_channels):
-        super(ConvBlock, self).__init__()
-        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
-        self.bn = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU(inplace=True)
-        
-    def forward(self, x):
-        return self.relu(self.bn(self.conv(x)))`;
+    if (p.includes('meeting') || p.includes('support') || p.includes('locate') || p.includes('group')) {
+        return `[AETHERA LOCATOR DIRECTIVE // RECOVERY GROUPS]
+* Local SMART Recovery Center - 1.2 miles away (Meetings Mon/Wed 7 PM).
+* Daily AA/NA Community Hall - 1.8 miles away (Open daily 12 PM & 6 PM).
+* Compassionate Care Clinic - 2.5 miles away (Support counseling services).
+* Caregiver Alignment Meeting - 3.0 miles away (Family support circles).`;
     }
 
     return `[AETHERA BACKEND BACKUP // INSTRUCTION PROCESSED]
@@ -295,38 +272,41 @@ Tuning Temperature: ${temp}
 
 Analysis:
 * Server resolved prompt parameters successfully.
-* Database link checked.
+* Database caregiver catalog linked.
 * Response generated via server rule lookup. Set GEMINI_API_KEY env key to trigger live cognitive answers.`;
 }
 
 function getPersuasiveMockResponse(prompt) {
     const p = prompt.toLowerCase();
     
-    if (p.includes('explain') && p.includes('algorithm')) {
-        return `[AETHERA PERSUASION ENGINE]
-Hook: Understanding sorting algorithms is like learning the secret shorthand of computing. Once you grasp binary search, it changes how you look at databases forever.
+    if (p.includes('crave') || p.includes('cope') || p.includes('de-escalate')) {
+        return `[AETHERA PERSUASIVE RECOVERY CORE]
+Hook: Cravings feel like permanent emergencies, but in reality, they are just temporary waves of chemical habit. Surfing the wave gets easier each time you hold on.
 
-Evidence: Unlike sequential loops that scan items one by one taking thousands of steps, binary search divides arrays in half recursively, locating your item in a maximum of 20 operations for a million elements.
+Evidence: Clinical research shows that by delaying action for just 15 minutes while shifting your environment, over 85 percent of cravings diminish to manageable levels.
 
-Benefit: By adopting this pattern, your application latency drops by over 90 percent. Your users get a blazing-fast experience, and your servers run cool and efficient under heavy load.`;
+Benefit: By choosing to pause and breathe today, you are actively rewiring your brain's pathways, regaining control, and keeping your recovery completely on track.`;
     }
     
-    if (p.includes('debug') && p.includes('database')) {
-        return `[AETHERA PERSUASION ENGINE]
-Hook: Slow databases are the silent killer of great user experiences. Optimizing your indexes is the single most powerful action you can take.
+    if (p.includes('draft') || p.includes('sms') || p.includes('emergency')) {
+        return `[AETHERA PERSUASIVE RECOVERY CORE]
+Hook: Reaching out during a craving is not a sign of weakness; it is the ultimate strategy of a resilient mind. Your caregiver wants to support you.
 
-Evidence: Adding a compound index on foreign keys and creation dates reduces SQL scanning overhead from O(N) to O(log N), completing query loops in sub-millisecond times.
+Evidence: Sending a pre-formatted alert reduces caregiver response latency by 80 percent, instantly establishing a safety loop.
 
-Benefit: That means your page loads instantly, your CPU usage flatlines to zero, and your hosting bills drop dramatically starting today.`;
+Benefit: Sending this script connects you to your support system immediately, giving you safety and peace of mind during high cognitive load.
+
+PERSONALIZED EMERGENCY SCRIPT:
+"Hi Sarah, I am navigating a strong craving trigger right now and need support to stay safe. Could you please check in on me or call me as soon as you can? Thank you."`;
     }
     
     // Generic fallback
-    return `[AETHERA PERSUASION ENGINE]
-Hook: I hear your question regarding "${prompt}", and it is an essential challenge to solve. Let's look at how we can optimize this passively together.
+    return `[AETHERA PERSUASIVE RECOVERY CORE]
+Hook: I hear your challenges regarding "${prompt}", and navigating this requires courage. Let's look at how we can handle this passively together.
 
-Evidence: Based on server-side performance analytics, running these specific instructions increases operational throughput by 40 percent compared to legacy templates.
+Evidence: Following structured recovery protocols increases long-term relapse prevention rates by over 50 percent.
 
-Benefit: By deploying this method today, you will immediately simplify your workspace workflow, saving execution energy and creating a more responsive interface.`;
+Benefit: By using this zero-typing portal, you reduce cognitive load when stress triggers are highest, keeping you focused on recovery.`;
 }
 
 // Global Exception error handler (prevents trace leakage)
@@ -337,12 +317,32 @@ app.use((err, req, res, next) => {
 
 function checkSensitiveKeywords(prompt) {
     const p = prompt.toLowerCase();
-    return p.includes('hash') || p.includes('password') || p.includes('cryptography') || p.includes('delete');
+    return p.includes('overdose') || p.includes('relapse') || p.includes('suicide') || p.includes('intoxication') || p.includes('hash') || p.includes('password') || p.includes('cryptography') || p.includes('delete');
 }
 
 function getSafeDeterministicTemplate(prompt, engine, temp) {
     const p = prompt.toLowerCase();
     
+    if (p.includes('overdose')) {
+        return `[DETERMINISTIC CRISIS ROUTER - OVERDOSE DETECTED]
+🚨 MEDICAL EMERGENCY RESPONSE ACTIVE:
+1. CALL 911 IMMEDIATELY.
+2. If Naloxone (Narcan) is available, administer it immediately.
+3. Stay with the person, lay them on their side in the recovery position (prevents choking).
+4. Do not leave the person alone. Ensure airway is clear.
+5. SAMHSA Crisis Hotline: 1-800-662-HELP (4357).`;
+    }
+
+    if (p.includes('relapse') || p.includes('suicide') || p.includes('intoxication')) {
+        return `[DETERMINISTIC CRISIS ROUTER - RELAPSE INTERCEPT]
+🌱 IMMEDIATE SOBRIETY COPING CHECKLIST:
+1. Stop what you are doing. Take 5 deep diaphragmatic breaths.
+2. Call or Text the Suicide & Crisis Lifeline at 988.
+3. Reach out to your emergency caregiver contact immediately.
+4. Distract: Shift your physical environment. Go outside or change rooms.
+5. Remind yourself: Cravings are like waves. They rise, peak, and always pass.`;
+    }
+
     if (p.includes('hash') || p.includes('password') || p.includes('cryptography')) {
         return `// DETERMINISTIC SAFETY FAILSAFE: Secure pbkdf2 Hashing
 const crypto = require('crypto');
@@ -356,19 +356,14 @@ function secureHash(inputPassword) {
         iterations: 100000,
         algorithm: 'sha512'
     };
-}
-
-# Verified by Aethera safety compiler.
-# Output compiled deterministically under Safety Mode.`;
+}`;
     }
 
     if (p.includes('delete')) {
         return `-- DETERMINISTIC SAFETY FAILSAFE: Database Row Deletion (soft delete pattern)
 UPDATE users 
 SET deleted_at = CURRENT_TIMESTAMP, status = 'ARCHIVED' 
-WHERE id = ? AND status != 'DELETED';
-
--- Audit logging event dispatched passively.`;
+WHERE id = ? AND status != 'DELETED';`;
     }
 
     return `// DETERMINISTIC SAFETY PIPELINE OUTCOME
