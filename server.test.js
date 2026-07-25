@@ -130,5 +130,22 @@ describe('Aethera Full-Stack API Suite', () => {
             expect(res.body).toHaveProperty('response');
             expect(res.body.response).toContain('DETERMINISTIC SAFETY FAILSAFE: Secure pbkdf2 Hashing');
         });
+
+        it('should route to persuasive engine template when Persuader Voice Core is selected', async () => {
+            const res = await request(app)
+                .post('/api/generate')
+                .send({
+                    prompt: 'Explain the algorithm in comprehensive detail',
+                    engine: 'Persuader Voice Core',
+                    temp: '0.7'
+                })
+                .expect(200);
+
+            expect(res.body).toHaveProperty('response');
+            expect(res.body.response).toContain('[AETHERA PERSUASION ENGINE]');
+            expect(res.body.response).toContain('Hook:');
+            expect(res.body.response).toContain('Evidence:');
+            expect(res.body.response).toContain('Benefit:');
+        });
     });
 });

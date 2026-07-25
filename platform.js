@@ -516,8 +516,23 @@ Analysis Summary:
                               .replace(/arr/g, 'array');
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+        
+        if (activeEngine === 'Persuader Voice Core') {
+            utterance.rate = 0.93;
+            utterance.pitch = 0.96;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const premiumVoice = voices.find(v => 
+                (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Zira') || v.name.includes('David')) 
+                && v.lang.startsWith('en')
+            );
+            if (premiumVoice) {
+                utterance.voice = premiumVoice;
+            }
+        } else {
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+        }
 
         utterance.onstart = () => {
             ttsSpeakBtn.textContent = '🔊 Reading...';

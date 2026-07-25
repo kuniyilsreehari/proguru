@@ -123,6 +123,11 @@ app.post('/api/generate', async (req, res) => {
     if (apiKey) {
         console.log(`Forwarding query to real Gemini API. Engine: ${engine}`);
         try {
+            const isPersuader = engine === 'Persuader Voice Core';
+            const customPrompt = isPersuader
+                ? `[SYSTEM INSTRUCTION: You are an empathetic, persuasive voice agent. Structure your response using a short conversational Hook, followed by logical Evidence, ending with a clear, positive Benefit. Keep sentences short and warm for voice synthesis.] ${prompt}`
+                : `${prompt} Answer in the style of a high-tech console and keep it relatively brief.`;
+
             const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const response = await fetch(apiURL, {
                 method: 'POST',
@@ -131,7 +136,7 @@ app.post('/api/generate', async (req, res) => {
                 },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{ text: `${prompt} Answer in the style of a high-tech console and keep it relatively brief.` }]
+                        parts: [{ text: customPrompt }]
                     }],
                     generationConfig: {
                         temperature: parseFloat(temp) || 0.7
@@ -163,6 +168,10 @@ app.post('/api/generate', async (req, res) => {
 
 function getMockResponse(prompt, engine, temp) {
     const p = prompt.toLowerCase();
+    
+    if (engine === 'Persuader Voice Core') {
+        return getPersuasiveMockResponse(prompt);
+    }
     
     if (p.includes('explain') && p.includes('algorithm')) {
         return `def binary_search(arr, target):
@@ -223,6 +232,36 @@ Analysis:
 * Server resolved prompt parameters successfully.
 * Database link checked.
 * Response generated via server rule lookup. Set GEMINI_API_KEY env key to trigger live cognitive answers.`;
+}
+
+function getPersuasiveMockResponse(prompt) {
+    const p = prompt.toLowerCase();
+    
+    if (p.includes('explain') && p.includes('algorithm')) {
+        return `[AETHERA PERSUASION ENGINE]
+Hook: Understanding sorting algorithms is like learning the secret shorthand of computing. Once you grasp binary search, it changes how you look at databases forever.
+
+Evidence: Unlike sequential loops that scan items one by one taking thousands of steps, binary search divides arrays in half recursively, locating your item in a maximum of 20 operations for a million elements.
+
+Benefit: By adopting this pattern, your application latency drops by over 90 percent. Your users get a blazing-fast experience, and your servers run cool and efficient under heavy load.`;
+    }
+    
+    if (p.includes('debug') && p.includes('database')) {
+        return `[AETHERA PERSUASION ENGINE]
+Hook: Slow databases are the silent killer of great user experiences. Optimizing your indexes is the single most powerful action you can take.
+
+Evidence: Adding a compound index on foreign keys and creation dates reduces SQL scanning overhead from O(N) to O(log N), completing query loops in sub-millisecond times.
+
+Benefit: That means your page loads instantly, your CPU usage flatlines to zero, and your hosting bills drop dramatically starting today.`;
+    }
+    
+    // Generic fallback
+    return `[AETHERA PERSUASION ENGINE]
+Hook: I hear your question regarding "${prompt}", and it is an essential challenge to solve. Let's look at how we can optimize this passively together.
+
+Evidence: Based on server-side performance analytics, running these specific instructions increases operational throughput by 40 percent compared to legacy templates.
+
+Benefit: By deploying this method today, you will immediately simplify your workspace workflow, saving execution energy and creating a more responsive interface.`;
 }
 
 // Global Exception error handler (prevents trace leakage)
