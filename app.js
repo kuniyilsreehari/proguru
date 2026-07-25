@@ -72,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cpuPctText = document.getElementById('cpu-percentage');
     const memPctText = document.getElementById('mem-percentage');
 
+    let hasWarnedHighCPU = false;
+
     const updateGauges = () => {
         if (cpuGauge && memGauge) {
             fetch('/api/telemetry')
@@ -81,6 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     memGauge.setAttribute('stroke-dasharray', `${data.memory}, 100`);
                     cpuPctText.textContent = `${data.cpu}%`;
                     memPctText.textContent = `${data.memory}%`;
+
+                    // Telemetry Throttling Trigger
+                    if (data.cpu > 80) {
+                        isMatrixPaused = true;
+                        if (!hasWarnedHighCPU) {
+                            alertLog("High server load detected. Passively throttling matrix canvas renders.");
+                            hasWarnedHighCPU = true;
+                        }
+                    } else {
+                        isMatrixPaused = false;
+                        hasWarnedHighCPU = false;
+                    }
                 })
                 .catch(err => {
                     // Fallback to random flux if backend is offline
@@ -90,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     memGauge.setAttribute('stroke-dasharray', `${memVal}, 100`);
                     cpuPctText.textContent = `${cpuVal}%`;
                     memPctText.textContent = `${memVal}%`;
+                    isMatrixPaused = false;
                 });
         }
     };
@@ -371,4 +386,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return key;
     }
+
+    // --- 9. Scroll Focus Context Trigger ---
+    const terminalContainer = document.getElementById('terminal');
+    if (terminalContainer && terminalInput) {
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    terminalInput.focus();
+                    appendTerminalOutput("[PASSIVE CONTEXT] Terminal in view. Keyboard input focused.", "system-line");
+                }
+            });
+        }, { threshold: 0.6 });
+        scrollObserver.observe(terminalContainer);
+    }
+
+    // --- 10. Behavioral Inactivity Dimmer ---
+    let idleTimer = null;
+    const idleDuration = 45000; // 45 seconds
+
+    function triggerIdleState() {
+        document.body.style.transition = 'filter 2s ease, opacity 2s ease';
+        document.body.style.filter = 'contrast(0.7) brightness(0.6)';
+        
+        // Show dimming eco-mode HUD overlay badge if it doesn't exist
+        if (!document.getElementById('eco-mode-badge')) {
+            const badge = document.createElement('div');
+            badge.id = 'eco-mode-badge';
+            badge.style.position = 'fixed';
+            badge.style.bottom = '20px';
+            badge.style.right = '20px';
+            badge.style.background = 'rgba(255, 0, 122, 0.2)';
+            badge.style.border = '1px solid var(--accent-pink)';
+            badge.style.color = 'var(--accent-pink)';
+            badge.style.padding = '8px 16px';
+            badge.style.borderRadius = '4px';
+            badge.style.fontFamily = 'monospace';
+            badge.style.fontSize = '0.75rem';
+            badge.style.zIndex = '9999';
+            badge.style.pointerEvents = 'none';
+            badge.textContent = '[HOLOGRAPHIC ECO-MODE ACTIVE]';
+            document.body.appendChild(badge);
+        }
+    }
+
+    function resetIdleTimer() {
+        if (idleTimer) clearTimeout(idleTimer);
+        document.body.style.filter = '';
+        const badge = document.getElementById('eco-mode-badge');
+        if (badge) badge.remove();
+        
+        idleTimer = setTimeout(triggerIdleState, idleDuration);
+    }
+
+    ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(eventName => {
+        window.addEventListener(eventName, resetIdleTimer);
+    });
+    resetIdleTimer();
 });

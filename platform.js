@@ -143,15 +143,27 @@ document.addEventListener('DOMContentLoaded', () => {
         recognition.interimResults = false;
         recognition.lang = 'en-US';
 
+        let silenceTimer = null;
+
         recognition.onstart = () => {
             isListening = true;
             micBtn.classList.add('active');
             voiceStatus.textContent = 'Listening... Speak clearly into microphone';
             nodeSpeech.classList.add('running');
             startVoiceWaveAnimation();
+
+            // Passive silence timeout: stops if no vocal data received for 5 seconds
+            silenceTimer = setTimeout(() => {
+                if (isListening && !userSpeechInput) {
+                    recognition.stop();
+                    voiceStatus.textContent = 'Passively stopped recording due to silence.';
+                    alertLog('Voice recording auto-stopped due to inactive speech.');
+                }
+            }, 5000);
         };
 
         recognition.onend = () => {
+            if (silenceTimer) clearTimeout(silenceTimer);
             isListening = false;
             micBtn.classList.remove('active');
             nodeSpeech.classList.remove('running');
@@ -162,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         recognition.onerror = (event) => {
+            if (silenceTimer) clearTimeout(silenceTimer);
             console.error('Speech error:', event.error);
             voiceStatus.textContent = `Error: ${event.error}. Click mic to retry.`;
             isListening = false;
@@ -171,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         recognition.onresult = (event) => {
+            if (silenceTimer) clearTimeout(silenceTimer);
             const resultText = event.results[0][0].transcript;
             userSpeechInput = resultText;
             
