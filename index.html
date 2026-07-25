@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity OS - Defy Computational Limits</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Antigravity OS is a futuristic, spatial, and neural operating system that breaks the boundaries of traditional computing. Experience zero-g rendering, neural telemetry, and spatial workspaces.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Ambient Background Elements -->
+    <div class="ambient-glow glow-primary"></div>
+    <div class="ambient-glow glow-secondary"></div>
+    <div id="particle-container"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar" id="main-header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">▲</span>
+                <span class="logo-text">ANTIGRAVITY <span class="accent-text">OS</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#showcase">Workspace</a>
+                <a href="#terminal">Terminal</a>
+                <a href="#access" class="nav-btn">Get Access</a>
+            </nav>
+            <button class="mobile-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="badge fade-in">V2.0 ALPHA DEPLOYED</div>
+            <h1 class="hero-title fade-in">Defy Computational <span class="gradient-text">Gravity</span></h1>
+            <p class="hero-subtitle fade-in">A spatial operating system built for multi-dimensional computing, neural telemetry, and boundaryless rendering. Welcome to the zero-g workspace.</p>
+            <div class="hero-actions fade-in">
+                <a href="#showcase" class="btn btn-primary">Launch Simulator</a>
+                <a href="#terminal" class="btn btn-secondary">Access Console</a>
+            </div>
+        </div>
+        
+        <!-- Interactive Floating Mockup -->
+        <div class="hero-visual fade-in">
+            <div class="glass-window hero-window">
+                <div class="window-header">
+                    <div class="window-dot red"></div>
+                    <div class="window-dot yellow"></div>
+                    <div class="window-dot green"></div>
+                    <span class="window-title">neural_telemetry.sys</span>
+                </div>
+                <div class="window-body">
+                    <div class="visualizer-grid">
+                        <div class="vis-card">
+                            <div class="vis-label">COGNITIVE SYNC</div>
+                            <div class="vis-value">98.4%</div>
+                            <div class="vis-progress"><span style="width: 98.4%"></span></div>
+                        </div>
+                        <div class="vis-card">
+                            <div class="vis-label">GRAVITY INDEX</div>
+                            <div class="vis-value" id="gravity-val">0.00G</div>
+                            <div class="vis-progress"><span class="pulse-width" style="width: 12%"></span></div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="bar-chart">
+                            <div class="chart-bar" style="--height: 40%"></div>
+                            <div class="chart-bar" style="--height: 60%"></div>
+                            <div class="chart-bar" style="--height: 80%"></div>
+                            <div class="chart-bar" style="--height: 55%"></div>
+                            <div class="chart-bar" style="--height: 95%"></div>
+                            <div class="chart-bar" style="--height: 70%"></div>
+                            <div class="chart-bar" style="--height: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section id="features" class="features-section scroll-reveal">
+        <div class="section-header">
+            <h2 class="section-title">Engineered to <span class="gradient-text">transcend</span></h2>
+            <p class="section-desc">Antigravity OS bypasses legacy architecture to deliver real-time spatial cognition and raw computing speed.</p>
+        </div>
+        
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="glass-card feature-card">
+                <div class="feature-icon font-icon">✦</div>
+                <h3 class="feature-title">Spatial Desktops</h3>
+                <p class="feature-text">Break free of two dimensions. Windows float in three-dimensional space, responding to your eye movements and physical gestures.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="glass-card feature-card">
+                <div class="feature-icon font-icon">⚡</div>
+                <h3 class="feature-title">Quantum Sandbox</h3>
+                <p class="feature-text">Isolate and run processes with zero latency overhead. Instantaneous feedback loops powered by our local quantum core emulator.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="glass-card feature-card">
+                <div class="feature-icon font-icon">❂</div>
+                <h3 class="feature-title">Neural Telemetry</h3>
+                <p class="feature-text">Connect directly with mind-to-machine integrations. Monitor workspace threads and direct apps using focus and intent detection.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="glass-card feature-card">
+                <div class="feature-icon font-icon">▼</div>
+                <h3 class="feature-title">Zero-G Rendering</h3>
+                <p class="feature-text">A hardware-accelerated graphic pipeline designed to handle complex volumetric renders without thermal bottlenecks.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive OS Showcase -->
+    <section id="showcase" class="showcase-section scroll-reveal">
+        <div class="section-header">
+            <h2 class="section-title">The <span class="gradient-text">Workspace</span></h2>
+            <p class="section-desc">Experience the core workspace interactive module. Switch screens below to preview system states.</p>
+        </div>
+
+        <div class="workspace-container">
+            <!-- Workspace Sidebar Tabs -->
+            <div class="workspace-tabs">
+                <button class="tab-btn active" data-tab="visualizer">
+                    <span class="tab-dot font-icon">☼</span> Neural Visualizer
+                </button>
+                <button class="tab-btn" data-tab="health">
+                    <span class="tab-dot font-icon">⚇</span> System Analytics
+                </button>
+                <button class="tab-btn" data-tab="matrix-sim">
+                    <span class="tab-dot font-icon">⚟</span> Core Sandbox
+                </button>
+            </div>
+
+            <!-- Workspace Screen Body -->
+            <div class="glass-window workspace-screen">
+                <div class="window-header">
+                    <div class="window-dot red"></div>
+                    <div class="window-dot yellow"></div>
+                    <div class="window-dot green"></div>
+                    <span class="window-title" id="screen-title">workspace://neural_visualizer</span>
+                </div>
+                
+                <div class="window-body screen-body">
+                    <!-- Tab 1: Visualizer -->
+                    <div class="tab-content active" id="tab-visualizer">
+                        <div class="visualizer-container">
+                            <div class="vis-nodes">
+                                <div class="node-ring ring-outer"></div>
+                                <div class="node-ring ring-mid"></div>
+                                <div class="node-ring ring-inner"></div>
+                                <div class="node-center">▲</div>
+                            </div>
+                            <div class="vis-stats-panel">
+                                <h3>Telemetry Stream</h3>
+                                <div class="stat-row">
+                                    <span>Signal Quality</span>
+                                    <span class="value cyan-text">99.8%</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Sync Mode</span>
+                                    <span class="value text-glow">HEURISTIC</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Core Temperature</span>
+                                    <span class="value">34.2 °C</span>
+                                </div>
+                                <button class="btn btn-sm btn-glow" id="ping-nodes-btn">Pulse Diagnostic</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: System Health -->
+                    <div class="tab-content" id="tab-health">
+                        <div class="metrics-container">
+                            <div class="metric-gauge">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" id="cpu-gauge" stroke-dasharray="42, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <text x="18" y="20.35" class="percentage" id="cpu-percentage">42%</text>
+                                </svg>
+                                <div class="gauge-label">QUANTUM STABILITY</div>
+                            </div>
+                            <div class="metric-gauge">
+                                <svg viewBox="0 0 36 36" class="circular-chart purple-chart">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" id="mem-gauge" stroke-dasharray="78, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <text x="18" y="20.35" class="percentage" id="mem-percentage">78%</text>
+                                </svg>
+                                <div class="gauge-label">THREAD POOL SYNC</div>
+                            </div>
+                            <div class="metrics-list">
+                                <div class="list-item">
+                                    <span>Hyperthreading Core</span>
+                                    <span class="badge active-badge">ONLINE</span>
+                                </div>
+                                <div class="list-item">
+                                    <span>Gravity Compensator</span>
+                                    <span class="badge active-badge">0.00 G</span>
+                                </div>
+                                <div class="list-item">
+                                    <span>Entropy Level</span>
+                                    <span class="badge warning-badge">MINIMAL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Matrix/Sandbox -->
+                    <div class="tab-content" id="tab-matrix-sim">
+                        <div class="sandbox-matrix">
+                            <canvas id="matrix-canvas"></canvas>
+                            <div class="sandbox-controls">
+                                <div class="control-header">Matrix Sub-Console</div>
+                                <p>Control execution rate and overlay filters in real-time.</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-primary" id="matrix-freeze-btn">Pause Stream</button>
+                                    <button class="btn btn-sm btn-secondary" id="matrix-color-btn">Shift Spectrum</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Console Section -->
+    <section id="terminal" class="terminal-section scroll-reveal">
+        <div class="section-header">
+            <h2 class="section-title">Direct <span class="gradient-text">Control</span></h2>
+            <p class="section-desc">Query the system database directly. Interact with the core kernel via the developer console below.</p>
+        </div>
+
+        <div class="glass-window terminal-container">
+            <div class="window-header">
+                <div class="window-dot red"></div>
+                <div class="window-dot yellow"></div>
+                <div class="window-dot green"></div>
+                <span class="window-title">guest@antigravity-core:~</span>
+            </div>
+            <div class="window-body terminal-body" id="terminal-body">
+                <div class="terminal-output" id="terminal-output">
+                    <p class="terminal-line system-line">Welcome to ANTIGRAVITY OS Command Shell [Version 2.0.7-alpha]</p>
+                    <p class="terminal-line system-line">Type <span class="cmd-highlight">help</span> for a list of available system commands.</p>
+                    <br>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">guest@antigravity ~ %</span>
+                    <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign-up / Get Access Section -->
+    <section id="access" class="access-section scroll-reveal">
+        <div class="glass-card access-card">
+            <h2>Deploy the Future</h2>
+            <p>Request developer access keys to the Antigravity SDK and become part of the spatial computing revolution.</p>
+            <form id="access-form" class="access-form">
+                <div class="input-group">
+                    <input type="email" id="user-email" placeholder="Enter developer email" required class="glass-input">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Request Keys</button>
+                </div>
+                <div class="form-feedback" id="form-feedback"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="logo-icon">▲</span>
+                    <span class="logo-text">ANTIGRAVITY <span class="accent-text">OS</span></span>
+                </div>
+                <p>Redefining compute dimensions since 2026.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Resources</h4>
+                    <a href="#">SDK Reference</a>
+                    <a href="#">APIs</a>
+                    <a href="#">Neural Bridge</a>
+                </div>
+                <div class="link-group">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Telemetry Research</a>
+                    <a href="#">Careers</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Antigravity Systems Inc. Defy computational limits.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

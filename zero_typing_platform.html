@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethera - Zero-Typing AI Playground & Model Workspace</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Aethera is a next-generation AI model platform designed for zero typing. Build, configure, and prompt complex machine learning pipelines using interactive speech recognition and modular click arrays.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="platform.css">
+</head>
+<body>
+    <!-- Ambient Background Lighting -->
+    <div class="ambient-glow glow-amber"></div>
+    <div class="ambient-glow glow-emerald"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">⬥</span>
+                <span class="logo-text">AETHERA <span class="accent-text">// ZERO-TYPING AI</span></span>
+            </a>
+            <div class="header-status">
+                <span class="status-indicator online"></span>
+                <span class="status-label">SPEECH INTERFACE READY</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <main class="workspace-layout">
+        
+        <!-- Left Side: Interactive Matrix Input Builder -->
+        <section class="workspace-panel matrix-panel">
+            <div class="panel-header">
+                <h2>Prompt Construction Matrix</h2>
+                <p class="panel-subtitle">Click items to assemble prompts. Zero keyboard input required.</p>
+            </div>
+            
+            <div class="matrix-sections">
+                <!-- Row 1: Actions -->
+                <div class="matrix-row">
+                    <div class="row-label">ACTIONS</div>
+                    <div class="token-grid" id="grid-actions">
+                        <button class="token-btn" data-type="action" data-value="Explain">Explain</button>
+                        <button class="token-btn" data-type="action" data-value="Debug">Debug</button>
+                        <button class="token-btn" data-type="action" data-value="Refactor">Refactor</button>
+                        <button class="token-btn" data-type="action" data-value="Summarize">Summarize</button>
+                        <button class="token-btn" data-type="action" data-value="Generate">Generate</button>
+                        <button class="token-btn" data-type="action" data-value="Optimize">Optimize</button>
+                        <button class="token-btn" data-type="action" data-value="Compare">Compare</button>
+                    </div>
+                </div>
+
+                <!-- Row 2: Subjects -->
+                <div class="matrix-row">
+                    <div class="row-label">SUBJECTS</div>
+                    <div class="token-grid" id="grid-subjects">
+                        <button class="token-btn" data-type="subject" data-value="the algorithm">Algorithm</button>
+                        <button class="token-btn" data-type="subject" data-value="the database query">Database Query</button>
+                        <button class="token-btn" data-type="subject" data-value="the API endpoint">API Endpoint</button>
+                        <button class="token-btn" data-type="subject" data-value="the CSS layout">CSS Layout</button>
+                        <button class="token-btn" data-type="subject" data-value="the neural network layers">Neural Network</button>
+                        <button class="token-btn" data-type="subject" data-value="the security protocol">Security Protocol</button>
+                        <button class="token-btn" data-type="subject" data-value="this text snippet">Text Snippet</button>
+                    </div>
+                </div>
+
+                <!-- Row 3: Modifiers -->
+                <div class="matrix-row">
+                    <div class="row-label">MODIFIERS</div>
+                    <div class="token-grid" id="grid-modifiers">
+                        <button class="token-btn" data-type="modifier" data-value="in comprehensive detail">In-Depth</button>
+                        <button class="token-btn" data-type="modifier" data-value="briefly and concisely">Concise</button>
+                        <button class="token-btn" data-type="modifier" data-value="with strict safety focus">Secure</button>
+                        <button class="token-btn" data-type="modifier" data-value="with line-by-line comments">Commented</button>
+                        <button class="token-btn" data-type="modifier" data-value="using modern best practices">Best Practices</button>
+                        <button class="token-btn" data-type="modifier" data-value="under a creative style">Creative</button>
+                    </div>
+                </div>
+
+                <!-- Row 4: Target Formats -->
+                <div class="matrix-row">
+                    <div class="row-label">TARGET</div>
+                    <div class="token-grid" id="grid-targets">
+                        <button class="token-btn" data-type="target" data-value="formatted as Python code">Python</button>
+                        <button class="token-btn" data-type="target" data-value="formatted as JavaScript code">JavaScript</button>
+                        <button class="token-btn" data-type="target" data-value="formatted as a Markdown list">Markdown</button>
+                        <button class="token-btn" data-type="target" data-value="formatted as raw JSON data">JSON</button>
+                        <button class="token-btn" data-type="target" data-value="formatted as optimized SQL schema">SQL</button>
+                        <button class="token-btn" data-type="target" data-value="formatted as structured HTML table">HTML Table</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parameters Grid Selector -->
+            <div class="parameters-board">
+                <div class="param-header">TUNING KNOBS</div>
+                <div class="params-grid">
+                    <!-- Model Select Cards -->
+                    <div class="param-group">
+                        <span class="param-title">AI Engine</span>
+                        <div class="engine-cards">
+                            <div class="engine-card active" data-engine="Aethera LLM v4">
+                                <div class="engine-name">AETHERA-4</div>
+                                <div class="engine-desc">General Reasoning</div>
+                            </div>
+                            <div class="engine-card" data-engine="Volta Vision v2">
+                                <div class="engine-name">VOLTA-2</div>
+                                <div class="engine-desc">Graphic Synthesis</div>
+                            </div>
+                            <div class="engine-card" data-engine="Spectra Audio Engine">
+                                <div class="engine-name">SPECTRA</div>
+                                <div class="engine-desc">Acoustic Core</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sliders via buttons -->
+                    <div class="param-group">
+                        <span class="param-title">Creativity Variance</span>
+                        <div class="selector-capsules" id="selector-temp">
+                            <button class="capsule-btn" data-value="0.2">Precise (0.2)</button>
+                            <button class="capsule-btn active" data-value="0.7">Balanced (0.7)</button>
+                            <button class="capsule-btn" data-value="1.2">Inventive (1.2)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Pipeline Canvas, Voice Input & Response Engine -->
+        <section class="workspace-panel control-panel">
+            
+            <!-- Pipeline Flow Canvas -->
+            <div class="pipeline-section">
+                <div class="panel-header">
+                    <h2>Active Model Pipeline</h2>
+                    <p class="panel-subtitle">Interactive visual modules. Click nodes to toggle status.</p>
+                </div>
+                
+                <div class="pipeline-canvas" id="pipeline-canvas-container">
+                    <div class="pipeline-node node-input active" id="node-input-speech">
+                        <div class="node-icon font-icon">🎙</div>
+                        <div class="node-label">Audio Input</div>
+                        <span class="node-status">LISTENING</span>
+                    </div>
+                    <div class="pipeline-arrow" id="arrow-1"><span></span></div>
+                    
+                    <div class="pipeline-node node-model active" id="node-core-model">
+                        <div class="node-icon font-icon">🧠</div>
+                        <div class="node-label">Aethera-4 Core</div>
+                        <span class="node-status">READY</span>
+                    </div>
+                    <div class="pipeline-arrow" id="arrow-2"><span></span></div>
+                    
+                    <div class="pipeline-node node-output active" id="node-output-speaker">
+                        <div class="node-icon font-icon">🔊</div>
+                        <div class="node-label">Audio Reader</div>
+                        <span class="node-status">ONLINE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Control Center & Waveform -->
+            <div class="voice-center glass-card">
+                <div class="voice-wave-container">
+                    <canvas id="voice-wave-canvas"></canvas>
+                </div>
+                
+                <div class="voice-controls">
+                    <button class="mic-btn" id="mic-toggle-btn" aria-label="Toggle speech input">
+                        <span class="mic-ring"></span>
+                        <span class="mic-icon font-icon">🎙</span>
+                    </button>
+                    <div class="voice-status-text" id="voice-status">Tap microphone to dictate prompt verbally</div>
+                </div>
+            </div>
+
+            <!-- Neural Console (Prompt and AI Outputs) -->
+            <div class="console-section glass-window">
+                <div class="window-header">
+                    <div class="window-dot red"></div>
+                    <div class="window-dot yellow"></div>
+                    <div class="window-dot green"></div>
+                    <span class="window-title">compiled_instruction_logs.log</span>
+                </div>
+                <div class="window-body console-body">
+                    <!-- Compiled prompt viewer -->
+                    <div class="prompt-viewer">
+                        <span class="prompt-label">COMPILED PROMPT:</span>
+                        <div class="prompt-text" id="prompt-output-display">Click tokens above or speak to begin...</div>
+                    </div>
+                    
+                    <!-- Run controls -->
+                    <div class="execution-bar">
+                        <button class="btn btn-primary" id="run-pipeline-btn">Execute Pipeline</button>
+                        <button class="btn btn-secondary" id="clear-prompt-btn">Reset Workspace</button>
+                    </div>
+
+                    <!-- Output display -->
+                    <div class="output-viewer">
+                        <div class="output-header">
+                            <span class="output-title">PIPELINE RESPONSE:</span>
+                            <div class="output-actions">
+                                <button class="action-btn" id="tts-speak-btn" title="Read output aloud">🔊 Speak</button>
+                                <button class="action-btn" id="tts-stop-btn" title="Stop speech synthesis">🔇 Stop</button>
+                            </div>
+                        </div>
+                        <div class="output-text-area" id="model-output-display">
+                            Output values will print here in real-time once the compiled instruction is executed.
+                        </div>
+                    </div>
+
+                    <!-- Metrics bar -->
+                    <div class="console-metrics">
+                        <div class="metric-item">
+                            <span>SPEED:</span>
+                            <span class="val" id="metric-speed">-- t/s</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>LATENCY:</span>
+                            <span class="val" id="metric-latency">-- ms</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>SYNAPSE ENERGY:</span>
+                            <span class="val" id="metric-energy">-- J</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer links -->
+    <footer class="main-footer">
+        <p>&copy; 2026 Aethera AI Platform. Fully responsive zero-typing interface.</p>
+    </footer>
+
+    <!-- App Script -->
+    <script src="platform.js"></script>
+</body>
+</html>

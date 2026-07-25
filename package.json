@@ -1,0 +1,11 @@
+{
+  "name": "aethera-workspace",
+  "version": "1.0.0",
+  "description": "Antigravity OS and Aethera Zero-Typing AI Playground static pages server.",
+  "scripts": {
+    "dev": "vite --port 5173 --host"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
